@@ -5,7 +5,10 @@ import { buttonVariants } from "@/lib/variants"
 import { VariantProps } from "class-variance-authority"
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    'onAnimationStart' | 'onAnimationEnd' | 'onDragStart' | 'onDragEnd' | 'onDrag' | 'onDragEnter' | 'onDragExit' | 'onDragLeave' | 'onDragOver' | 'onDrop'
+  >,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   loading?: boolean

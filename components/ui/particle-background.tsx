@@ -10,26 +10,47 @@ interface ParticleBackgroundProps {
 export default function ParticleBackground({ isDarkMode = true }: ParticleBackgroundProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  // Ensure we're on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Mouse tracking for particle effects
   useEffect(() => {
+    if (!isClient) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isClient]);
 
   // Scroll tracking for dynamic backgrounds
   useEffect(() => {
+    if (!isClient) return;
+
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isClient]);
 
-  const progress = Math.min(scrollY / (document.body.scrollHeight - window.innerHeight), 1);
+  // Safe calculation that only runs on client
+  const progress = isClient && typeof window !== 'undefined' && document.body
+    ? Math.min(scrollY / (document.body.scrollHeight - window.innerHeight), 1)
+    : 0;
+
+  // Safe window dimensions
+  const windowWidth = isClient && typeof window !== 'undefined' ? window.innerWidth : 1920;
+  const windowHeight = isClient && typeof window !== 'undefined' ? window.innerHeight : 1080;
+
+  if (!isClient) {
+    return <div className="fixed inset-0 overflow-hidden pointer-events-none" />;
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -39,7 +60,7 @@ export default function ParticleBackground({ isDarkMode = true }: ParticleBackgr
         style={{
           background: `
             radial-gradient(
-              circle at ${50 + (mousePosition.x / window.innerWidth) * 20}% ${30 + progress * 40}%,
+              circle at ${50 + (mousePosition.x / windowWidth) * 20}% ${30 + progress * 40}%,
               rgba(102, 126, 234, ${0.4 + progress * 0.3}) 0%,
               transparent 50%
             ),
@@ -75,7 +96,7 @@ export default function ParticleBackground({ isDarkMode = true }: ParticleBackgr
             transform: `
               rotate(${progress * 360 + i * 45}deg)
               scale(${0.5 + Math.sin(progress * Math.PI + i) * 0.3})
-              translate(${(mousePosition.x - window.innerWidth / 2) * 0.02}px, ${(mousePosition.y - window.innerHeight / 2) * 0.02}px)
+              translate(${(mousePosition.x - windowWidth / 2) * 0.02}px, ${(mousePosition.y - windowHeight / 2) * 0.02}px)
             `,
             width: `${60 + i * 20}px`,
             height: `${60 + i * 20}px`,
@@ -99,8 +120,8 @@ export default function ParticleBackground({ isDarkMode = true }: ParticleBackgr
             opacity: 0.3 + Math.sin(progress * Math.PI * 2 + i) * 0.2,
             transform: `
               translate(
-                ${Math.sin(progress * Math.PI * 2 + i) * 50 + (mousePosition.x - window.innerWidth / 2) * 0.01}px,
-                ${Math.cos(progress * Math.PI * 2 + i) * 30 + (mousePosition.y - window.innerHeight / 2) * 0.01}px
+                ${Math.sin(progress * Math.PI * 2 + i) * 50 + (mousePosition.x - windowWidth / 2) * 0.01}px,
+                ${Math.cos(progress * Math.PI * 2 + i) * 30 + (mousePosition.y - windowHeight / 2) * 0.01}px
               )
               scale(${0.5 + Math.sin(progress * Math.PI + i) * 0.5})
             `,
@@ -114,7 +135,7 @@ export default function ParticleBackground({ isDarkMode = true }: ParticleBackgr
         {[...Array(5)].map((_, i) => (
           <path
             key={i}
-            d={`M ${-100 + progress * 200} ${100 + i * 200} Q ${window.innerWidth / 2 + Math.sin(progress * Math.PI + i) * 200} ${200 + i * 150 + Math.cos(progress * Math.PI + i) * 100} ${window.innerWidth + 100 - progress * 200} ${300 + i * 180}`}
+            d={`M ${-100 + progress * 200} ${100 + i * 200} Q ${windowWidth / 2 + Math.sin(progress * Math.PI + i) * 200} ${200 + i * 150 + Math.cos(progress * Math.PI + i) * 100} ${windowWidth + 100 - progress * 200} ${300 + i * 180}`}
             stroke={`url(#gradient${i})`}
             strokeWidth="2"
             fill="none"
