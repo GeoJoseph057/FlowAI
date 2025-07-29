@@ -1,12 +1,14 @@
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, MotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { cardVariants } from "@/lib/variants"
 import { VariantProps } from "class-variance-authority"
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof MotionProps>,
+    VariantProps<typeof cardVariants> {
+  children?: React.ReactNode
+}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, children, ...props }, ref) => {

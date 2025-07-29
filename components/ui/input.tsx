@@ -1,11 +1,11 @@
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, MotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { inputVariants } from "@/lib/variants"
 import { VariantProps } from "class-variance-authority"
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof MotionProps>,
     VariantProps<typeof inputVariants> {
   error?: string
 }

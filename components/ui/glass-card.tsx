@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, MotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface GlassCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof MotionProps> {
   hover?: boolean
   children: React.ReactNode
 }

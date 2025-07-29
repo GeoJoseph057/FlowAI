@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, MotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface GradientButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof MotionProps> {
   variant?: "primary" | "secondary" | "accent"
   size?: "sm" | "md" | "lg"
   children: React.ReactNode
