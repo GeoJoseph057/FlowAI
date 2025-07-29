@@ -5,21 +5,34 @@ import { buttonVariants } from "@/lib/variants"
 import { VariantProps } from "class-variance-authority"
 
 export interface ButtonProps
-extends Omit<
-React.ButtonHTMLAttributes<HTMLButtonElement>,
-'onAnimationStart' | 'onAnimationEnd' | 'onDragStart' | 'onDragEnd' | 'onDrag' | 'onDragEnter' | 'onDragExit' | 'onDragLeave' | 'onDragOver' | 'onDrop'
->,
-VariantProps<typeof buttonVariants> {
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    | 'onAnimationStart'
+    | 'onAnimationEnd'
+    | 'onAnimationIteration'
+    | 'onTransitionEnd'
+    | 'onDragStart'
+    | 'onDragEnd'
+    | 'onDrag'
+    | 'onDragEnter'
+    | 'onDragExit'
+    | 'onDragLeave'
+    | 'onDragOver'
+    | 'onDrop'
+  >,
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean
   loading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, loading, children, disabled, ...props }, ref) => {
-    // Destructure and remove the conflicting props
+    // Remove ALL conflicting props that might interfere with motion
     const {
       onAnimationStart,
       onAnimationEnd,
+      onAnimationIteration,
+      onTransitionEnd,
       onDragStart,
       onDragEnd,
       onDrag,
@@ -39,10 +52,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         transition={{ duration: 0.2 }}
-        {...safeProps}
+        {...safeProps} // Only pass the safe props
       >
         {loading && (
-          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
         )}
         {children}
       </motion.button>
