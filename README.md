@@ -55,22 +55,6 @@ AI-powered workspace that adapts to how your team actually works. Boost producti
 └── README.md
 ```
 
-## 🎨 Key Components
-
-- **Hero Section** - Eye-catching landing with 3D dashboard preview
-- **Features Grid** - Interactive feature cards with animations
-- **Pricing Cards** - Monthly/annual toggle with hover effects
-- **Stats Counter** - Animated numbers with scroll triggers
-- **Contact Form** - Responsive contact section
-
-## 🤖 AI-Powered Development
-
-This project was built using AI coding assistants to demonstrate:
-- Rapid prototyping and development
-- Modern UI/UX best practices
-- Component architecture design
-- Performance optimization techniques
-
 ## 📊 Performance
 
 - ⚡ **Lighthouse Score**: 95+ across all metrics
