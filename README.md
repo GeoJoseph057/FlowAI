@@ -4,6 +4,7 @@ AI-powered workspace that adapts to how your team actually works. Boost producti
 
 ![FlowAI Landing Page](https://via.placeholder.com/800x400/667eea/ffffff?text=FlowAI+Landing+Page)
 
+<!-- Deployment fix applied -->
 
 ## ✨ Features
 
