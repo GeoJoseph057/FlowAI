@@ -18,7 +18,7 @@ export function AnimatedCounter({
 }: AnimatedCounterProps) {
   const [count, setCount] = React.useState(0)
   const ref = React.useRef(null)
-  const isInView = useInView(ref, { once: true, threshold: 0.1 })
+  const isInView = useInView(ref, { once: true })
 
   React.useEffect(() => {
     if (isInView) {
